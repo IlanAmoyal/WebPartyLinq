@@ -13,11 +13,13 @@ Notes:
 4. You can see all the example below and much more in WpLinq.test.js
 
 *Ho to wrap iterable by Linq object*
+
 	new WpLinq([4, 7, 1, 23])
 	OR
 	WpLinq.from([4, 7, 1, 23])
 
 *Example 1: where -> sum*
+
 	new WpLinq([4, 7, 1, 23, 12, 5, 6]).where(a => a % 2 === 0).sum()
 
 	/* results:
@@ -25,6 +27,7 @@ Notes:
 	*/
 
 *Example 2: intersect -> toArray*
+
 	WpLinq.from([2, 4, 6, 8, 10, 12]).intersect([4, 10, 31, 6, 7]).toArray()
 
 	/* results:
@@ -32,6 +35,7 @@ Notes:
 	*/
 
 *Example 3: union -> select -> toArray*
+
 	new WpLinq("Hello world").union("THIS world").select((a, idx) => `${idx}-` + a).toArray().join("|")
 
 	/* results:
@@ -39,6 +43,7 @@ Notes:
 	*/
 
 *Example 4: orderBy -> toArray*
+
 	new WpLinq([4, 6, 3, 1, 9]).orderBy().toArray()
 
 	/* results:
@@ -47,6 +52,7 @@ Notes:
 
 
 *Example 5: orderBy -> thenBy -> select -> toArray*
+
 	WpLinq.from([{ key: 6, value: "bbb" }, { key: 3, value: "fff" }, { key: 1, value: "eee" }, { key: 4, value: "aaa" }])
 			.orderBy(a => a.key, (a, b) => (a % 2 - b % 2) /* the primary order: in this comparer each odd is greater than an even number */)
 			.thenBy(a => a.key, (a, b) => a - b /* the secondary order: regular order */)
