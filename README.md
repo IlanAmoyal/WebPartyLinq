@@ -22,33 +22,25 @@ Notes:
 
 	new WpLinq([4, 7, 1, 23, 12, 5, 6]).where(a => a % 2 === 0).sum()
 
-	/* results:
-	22
-	*/
+	/* results: 22 */
 
 *Example 2: intersect -> toArray*
 
 	WpLinq.from([2, 4, 6, 8, 10, 12]).intersect([4, 10, 31, 6, 7]).toArray()
 
-	/* results:
-	[4, 6, 10]
-	*/
+	/* results: [4, 6, 10] */
 
 *Example 3: union -> select -> toArray*
 
 	new WpLinq("Hello world").union("THIS world").select((a, idx) => `${idx}-` + a).toArray().join("|")
 
-	/* results:
-	0-H|1-e|2-l|3-o|4- |5-w|6-r|7-d|8-T|9-I|10-S
-	*/
+	/* results: 0-H|1-e|2-l|3-o|4- |5-w|6-r|7-d|8-T|9-I|10-S */
 
 *Example 4: orderBy -> toArray*
 
 	new WpLinq([4, 6, 3, 1, 9]).orderBy().toArray()
 
-	/* results:
-	[4, 6, 3, 1, 9]
-	*/
+	/* results: [1, 3, 4, 6, 9] */
 
 
 *Example 5: orderBy -> thenBy -> select -> toArray*
@@ -59,7 +51,5 @@ Notes:
 			.select(a => `${a.key}: ${a.value}`)
 			.toArray()
 
-	/* results:
-	["6: bbb", "3: fff", "1: eee", "4: aaa"]
-	*/
+	/* results: ["4: aaa", "6: bbb", "1: eee", "3: fff"] */
 
