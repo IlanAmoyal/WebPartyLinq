@@ -2178,6 +2178,8 @@ linqTest
 
 linqTest.go(true);
 
+console.groupCollapsed("%cExamples", "color: green");
+
 /* some more examples */
 console.group("Example 1: where -> sum");
 console.log("new WpLinq([4, 7, 1, 23, 12, 5, 6]).where(a => a % 2 === 0).sum() results:");
@@ -2196,6 +2198,7 @@ console.groupEnd();
 
 console.group("Example 4: orderBy -> toArray");
 console.log("new WpLinq([4, 6, 3, 1, 9]).orderBy().toArray() results:");
+//debugger;
 console.log(new WpLinq([4, 6, 3, 1, 9]).orderBy().toArray());
 console.groupEnd();
 
@@ -2207,6 +2210,7 @@ console.log(
 		'.select(a => `${a.key}: ${a.value}`)\n'+
 		'.toArray() results:'
 );
+
 console.log(
 	WpLinq.from([{ key: 6, value: "bbb" }, { key: 3, value: "fff" }, { key: 1, value: "eee" }, { key: 4, value: "aaa" }])
 		.orderBy(a => a.key, (a, b) => (a % 2 - b % 2) /* the primary order: in this comparer each odd is greater than an even number */)
@@ -2216,3 +2220,4 @@ console.log(
 );
 console.groupEnd();
 
+console.groupEnd();
