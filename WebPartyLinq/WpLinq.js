@@ -1,4 +1,4 @@
-﻿/*
+/*
  * WebPartLINQ - A full javascript implementation for the well known Microsoft LINQ, with some addition and adaptations
  * 
  * Version: 1.0.0.0.
@@ -229,7 +229,7 @@ class WpLinq {
 	 * @throws accumulator must be a function
 	 * @throws resultSelector must be a function or nullish
 	 */
-	aggregate(seed, accumulator, resultSelector) { return WpLinq.#_aggregate(this.#_thisArg, seed, this.#_iterable, accumulator, resultSelector); }
+	aggregate(seed, accumulator, resultSelector) { return WpLinq.#_aggregate(this.#_thisArg, seed, this, accumulator, resultSelector); }
 
 	static #_aggregate(thisArg, seed, iterator, accumulator, resultSelector) {
 		if (!WpTypeCheck.IsFunction(accumulator)) { throw new Error(this.ErrorMessage.MUST_BE_FUNCTION_accumulator); }
@@ -252,7 +252,7 @@ class WpLinq {
 	 * @returns {boolean} true if every element of the sequence passes the test in the specified predicate, or if the sequence is empty; otherwise, false.
 	 * @throws predicate must be a function.
 	 */
-	all(predicate) { return WpLinq.#_all(this.#_thisArg, this.#_iterable, predicate); }
+	all(predicate) { return WpLinq.#_all(this.#_thisArg, this, predicate); }
 
 	static #_all(thisArg, iterator, predicate) {
 		if (!WpTypeCheck.IsFunction(predicate)) { throw new Error(this.ErrorMessage.MUST_BE_FUNCTION_predicate); }
@@ -273,7 +273,7 @@ class WpLinq {
 	 * @returns {boolean} true if the sequence contains any elements; otherwise, false. BUT In case that a predicate was specified: true if the sequence is not empty and at least one of its elements passes the test in the specified predicate; otherwise, false.
 	 * @throws predicate must be a function or nullish.
 	 */
-	any(predicate) { return WpLinq.#_any(this.#_thisArg, this.#_iterable, predicate); }
+	any(predicate) { return WpLinq.#_any(this.#_thisArg, this, predicate); }
 
 	static #_any(thisArg, iterator, predicate) {
 		if (predicate != null && !WpTypeCheck.IsFunction(predicate)) { throw new Error(this.ErrorMessage.MUST_BE_FUNCTION_OR_NULLISH_predicate); }
@@ -293,7 +293,7 @@ class WpLinq {
 	 * @param {any} value - The value to be appended to the returned sequence.
 	 * @returns {WpLinq} A sequence consist of the current sequence plus the specified value.
 	 */
-	append(value) { return WpLinq.#_append(this.#_thisArg, this.#_iterable, value); }
+	append(value) { return WpLinq.#_append(this.#_thisArg, this, value); }
 
 	static #_append(thisArg, iterator, value) { return new this(this.#_appendGen(thisArg, iterator, value)); }
 
@@ -307,7 +307,7 @@ class WpLinq {
 	 * If the sequence is empty or at least one element of the sequence is not a number, the return value is undefined.
 	 * @return {number | undefined} The numeric average of the sequence,or undefined if the sequence contains at least oneitem that is not a number.
 	 */
-	average() { return WpLinq.#_average(this.#_thisArg, this.#_iterable); }
+	average() { return WpLinq.#_average(this.#_thisArg, this); }
 
 	static #_average(thisArg, iterator) {
 		let sum = 0, count = 0;
@@ -330,7 +330,7 @@ class WpLinq {
 	 * @returns {WpLinq} An iterable that contains the concatenated elements of the current sequence with all input sequences. 
 	 * @throw At least one of the argument is not iterable.
 	 */
-	concat(...withIterables) { return WpLinq.#_concat(this.#_thisArg, this.#_iterable, ...withIterables); }
+	concat(...withIterables) { return WpLinq.#_concat(this.#_thisArg, this, ...withIterables); }
 
 	static #_concat(thisArg, iterable, ...withIterables) {
 		/* the validation took place here and NOT within #_concat, because that is a deferred execution generator function*/
@@ -353,7 +353,7 @@ class WpLinq {
 	 * @returns {boolean} true if the sequence contains the specified value using strict equality comparison (===) or the specified equality comparer; otherwise, false.
 	 * @throws equalityComparer must be a function or nullish. 
 	 */
-	contains(value, equalityComparer = null) { return WpLinq.#_contains(this.#_thisArg, this.#_iterable, value, equalityComparer); }
+	contains(value, equalityComparer = null) { return WpLinq.#_contains(this.#_thisArg, this, value, equalityComparer); }
 
 	static #_contains(thisArg, iterator, value, equalityComparer) {
 		if (equalityComparer != null && !WpTypeCheck.IsFunction(equalityComparer)) { throw new Error(this.ErrorMessage.MUST_BE_FUNCTION_OR_NULLISH_equalityComparer); }
@@ -374,7 +374,7 @@ class WpLinq {
 	 * Returns the number of elements in a sequence.
 	 * @returns {number} The number of elements in a sequence.
 	 */
-	count() { return WpLinq.#_count(this.#_thisArg, this.#_iterable); }
+	count() { return WpLinq.#_count(this.#_thisArg, this); }
 
 	static #_count(thisArg, iterator) {
 		let c = 0;
@@ -389,7 +389,7 @@ class WpLinq {
 	 * @param {any} defaultSingletonValue - A default value to be used as a singleton in the returned sequence if the current sequence is empty.
 	 * @returns {Iterable} The elements of the sequence, or a default valued singleton collection if the sequence is empty.
 	 */
-	defaultIfEmpty(defaultSingletonValue) { return WpLinq.#_defaultIfEmpty(this.#_thisArg, this.#_iterable, defaultSingletonValue); }
+	defaultIfEmpty(defaultSingletonValue) { return WpLinq.#_defaultIfEmpty(this.#_thisArg, this, defaultSingletonValue); }
 
 	static #_defaultIfEmpty(thisArg, iterator, defaultSingletonValue) {
 		return new this(this.#_defaultIfEmptyGen(thisArg, iterator, defaultSingletonValue), thisArg);
@@ -410,7 +410,7 @@ class WpLinq {
 	 * @returns {WpLinq} Distinct elements from a sequence.
 	 * @throws equalityComparer must be a function or nullish
 	 */
-	distinct(equalityComparer) { return WpLinq.#_distinct(this.#_thisArg, this.#_iterable, equalityComparer); }
+	distinct(equalityComparer) { return WpLinq.#_distinct(this.#_thisArg, this, equalityComparer); }
 
 	static #_distinct(thisArg, iterator, equalityComparer) {
 		/* the validation took place here and NOT within #_distinctGen, because that is a deferred execution generator function*/
@@ -444,7 +444,7 @@ class WpLinq {
 	 * @returns {WpLinq} A sequence consist of duplication of the current sequence.
 	 * @throws factor must be a non negative integer
 	 */
-	duplicate(factor, inplace) { return WpLinq.#_duplicate(this.#_thisArg, this.#_iterable, factor, inplace); }
+	duplicate(factor, inplace) { return WpLinq.#_duplicate(this.#_thisArg, this, factor, inplace); }
 
 	static #_duplicate(thisArg, iterator, factor, inplace) {
 		if (!WpTypeCheck.IsNumber(factor) || Math.floor(factor) !== factor || factor < 0) { throw new Error(this.ErrorMessage.MSUT_BE_NON_NEGATIVE_INTEGER_factor); }
@@ -474,7 +474,7 @@ class WpLinq {
 	 * @throws The sequence is empty
 	 * @throws index is out of range
 	 */
-	elementAt(index) { return WpLinq.#_elementAt(this.#_thisArg, this.#_iterable, index, false, null); }
+	elementAt(index) { return WpLinq.#_elementAt(this.#_thisArg, this, index, false, null); }
 
 	/**
 	 * Returns the element at a specified index in the sequence, or the specified default value if the specified index is negative or out of range.
@@ -483,7 +483,7 @@ class WpLinq {
 	 * @returns {any} The element at a specified index in the sequence, or the default value if the specified index is negative or out of range.
 	 * @throws index must be a non negative integer
 	 */
-	elementAtOrDefault(index, defaultValue) { return WpLinq.#_elementAt(this.#_thisArg, this.#_iterable, index, true, defaultValue); }
+	elementAtOrDefault(index, defaultValue) { return WpLinq.#_elementAt(this.#_thisArg, this, index, true, defaultValue); }
 	
 	static #_elementAt(thisArg, iterator, index, hasDefaultValue, defaultValue) {
 		if (!WpTypeCheck.IsNumber(index) || Math.floor(index) != index || (index < 0 && hasDefaultValue !== true)) {
@@ -514,7 +514,7 @@ class WpLinq {
 	 * @throws secondIterator must be iterable
 	 * @throws equalityComparer must be a function or nullish
 	 */
-	except(secondIterator, equalityComparer) { return WpLinq.#_van(this.#_thisArg, this.#_iterable, secondIterator, equalityComparer, "except"); }
+	except(secondIterator, equalityComparer) { return WpLinq.#_van(this.#_thisArg, this, secondIterator, equalityComparer, "except"); }
 
 	static #_van(thisArg, sourceIterator, secondIterator, equalityComparer, algorithem) {
 		/* #_van and #_vanGen are inner implementation of three functions:
@@ -605,7 +605,7 @@ class WpLinq {
 	 * @throws The sequence is empty.
 	 * @throws No element satisfies the condition in predicate.
 	 */
-	first(predicate) { return WpLinq.#_first(this.#_thisArg, this.#_iterable, predicate, false); }
+	first(predicate) { return WpLinq.#_first(this.#_thisArg, this, predicate, false); }
 
 	/**
 	 * Returns the first element of the sequence, or the first one that meets the specified condition, if a such one was specified. A default value is returned if the sequence is empty or no element was found.
@@ -614,7 +614,7 @@ class WpLinq {
 	 * @returns {any} The first element of the sequence, or the first one that meets the specified condition, if a such one was specified. Or the specified default value if the sequence is empty or no element was found.
 	 * @throws predicate must be a function, null or undefined.
 	 */
-	firstOrDefault(defaultValue, predicate) { return WpLinq.#_first(this.#_thisArg, this.#_iterable, predicate, true, defaultValue); }
+	firstOrDefault(defaultValue, predicate) { return WpLinq.#_first(this.#_thisArg, this, predicate, true, defaultValue); }
 
 	static #_first(thisArg, iterator, predicate, hasDefaultValue, defaultValue) {
 		if (predicate != null && !WpTypeCheck.IsFunction(predicate)) {
@@ -641,7 +641,7 @@ class WpLinq {
 	 * The callback might return false to stop the iteration.
 	 * @throws callback must be a function
 	 */
-	forEach(callback) { return WpLinq.#_forEach(this.#_thisArg, this.#_iterable, callback); }
+	forEach(callback) { return WpLinq.#_forEach(this.#_thisArg, this, callback); }
 
 	static #_forEach(thisArg, iterator, callback) {
 		if (!WpTypeCheck.IsFunction(callback)) { throw new Error(this.ErrorMessage.MUST_BE_FUNCTION_callback); }
@@ -664,7 +664,7 @@ class WpLinq {
 	 * @param {any} [keyEqualityComparer] bool (a, b)
 	 */
 	groupBy(keySelector, elementSelector, resultSelector, keyEqualityComparer) {
-		return WpLinq.#_groupBy(this.#_thisArg, this.#_iterable, keySelector, elementSelector, resultSelector, keyEqualityComparer);
+		return WpLinq.#_groupBy(this.#_thisArg, this, keySelector, elementSelector, resultSelector, keyEqualityComparer);
 	}
 
 	static #_groupBy(thisArg, iterator, keySelector, elementSelector, resultSelector, keyEqualityComparer) {
@@ -727,7 +727,7 @@ class WpLinq {
 	 * @throws keyEqualityComparer must be a function or nullish
 	 */
 	groupJoin(rightIterator, leftKeySelector, rightKeySelector, resultSelector, keyEqualityComparer) {
-		return WpLinq.#_groupJoin(this.#_thisArg, this.#_iterable, rightIterator, leftKeySelector, rightKeySelector, resultSelector, keyEqualityComparer);
+		return WpLinq.#_groupJoin(this.#_thisArg, this, rightIterator, leftKeySelector, rightKeySelector, resultSelector, keyEqualityComparer);
 	}
 
 	static #_groupJoin(thisArg, iterator, rightIterator, leftKeySelector, rightKeySelector, resultSelector, keyEqualityComparer) {
@@ -761,7 +761,7 @@ class WpLinq {
 	 * @throws secondIterator must be iterable
 	 * @throws equalityComparer must be a function or nullish
 	 */
-	intersect(secondIterator, equalityComparer) { return WpLinq.#_van(this.#_thisArg, this.#_iterable, secondIterator, equalityComparer, "intersect"); }
+	intersect(secondIterator, equalityComparer) { return WpLinq.#_van(this.#_thisArg, this, secondIterator, equalityComparer, "intersect"); }
 
 	/**
 	 * Correlates the elements of two sequences based on matching keys: this sequence (which considered to be the left one) and the specified sequence (the right). 
@@ -780,7 +780,7 @@ class WpLinq {
 	 * @throws keyEqualityComparer must be a function or nullish
 	 */
 	join(rightIterator, leftKeySelector, rightKeySelector, resultSelector, keyEqualityComparer) {
-		return WpLinq.#_join(this.#_thisArg, this.#_iterable, rightIterator, leftKeySelector, rightKeySelector, resultSelector, keyEqualityComparer);
+		return WpLinq.#_join(this.#_thisArg, this, rightIterator, leftKeySelector, rightKeySelector, resultSelector, keyEqualityComparer);
 	}
 
 	static #_join(thisArg, iterator, rightIterator, leftKeySelector, rightKeySelector, resultSelector, keyEqualityComparer) {
@@ -819,7 +819,7 @@ class WpLinq {
 	 * @throws The sequence is empty
 	 * @throws No element satisfies the condition in predicate
 	 */
-	last(predicate) { return WpLinq.#_last(this.#_thisArg, this.#_iterable, predicate, false); }
+	last(predicate) { return WpLinq.#_last(this.#_thisArg, this, predicate, false); }
 
 	/**
 	 * Returns the last element of the sequence, or the last one that meets the specified condition, if a such one was specified. A default value is returned if the sequence is empty or no element was found.
@@ -828,7 +828,7 @@ class WpLinq {
 	 * @returns {any} The last element of the sequence, or the last one that meets the specified condition, if a such one was specified. Or the specified default value if the sequence is empty or no element was found.
 	 * @throws predicate must be a function or nullish
 	 */
-	lastOrDefault(defaultValue, predicate) { return WpLinq.#_last(this.#_thisArg, this.#_iterable, predicate, true, defaultValue); }
+	lastOrDefault(defaultValue, predicate) { return WpLinq.#_last(this.#_thisArg, this, predicate, true, defaultValue); }
 
 	static #_last(thisArg, iterator, predicate, hasDefaultValue, defaultValue) {
 		if (predicate != null && !WpTypeCheck.IsFunction(predicate)) { throw new Error(this.ErrorMessage.MUST_BE_FUNCTION_OR_NULLISH_predicate); }
@@ -856,7 +856,7 @@ class WpLinq {
 	 * @returns {any} The maximum value of the sequence.
 	 * @throws compare must be a function or nullish
 	 */
-	max(comparer) { return WpLinq.#_max(this.#_thisArg, this.#_iterable, comparer); }
+	max(comparer) { return WpLinq.#_max(this.#_thisArg, this, comparer); }
 
 	static #_max(thisArg, iterator, comparer) { return this.#_minMax(thisArg, iterator, comparer, 1); }
 
@@ -867,7 +867,7 @@ class WpLinq {
 	 * @returns {any} The minimum value of the sequence.
 	 * @throws compare must be a function or nullish
 	 */
-	min(comparer) { return WpLinq.#_min(this.#_thisArg, this.#_iterable, comparer); }
+	min(comparer) { return WpLinq.#_min(this.#_thisArg, this, comparer); }
 
 	static #_min(thisArg, iterator, comparer) { return this.#_minMax(thisArg, iterator, comparer, -1); }
 
@@ -915,7 +915,7 @@ class WpLinq {
 	 * @param {any} value - The value to be added to the beginning of the returned sequence.
 	 * @returns {WpLinq} A sequence consist of the specified element, and then the items from the current sequence.
 	 */
-	prepend(value) { return WpLinq.#_prepend(this.#_thisArg, this.#_iterable, value); }
+	prepend(value) { return WpLinq.#_prepend(this.#_thisArg, this, value); }
 
 	static #_prepend(thisArg, iterator, value) { return new this(this.#_prependGen(thisArg, iterator, value), thisArg); }
 
@@ -947,7 +947,7 @@ class WpLinq {
 	 * Return a copy of this sequence without the nullish values (null or undefined).
 	 * @returns {WpLinq} A copy of this sequence without the nullish values (null or undefined).
 	 */
-	removeNullishes() { return WpLinq.#_removeNullishes(this.#_thisArg, this.#_iterable); }
+	removeNullishes() { return WpLinq.#_removeNullishes(this.#_thisArg, this); }
 
 	static #_removeNullishes(thisArg, iterator) {
 		return new this(this.#_removeNullishesGen(thisArg, iterator), thisArg);
@@ -981,7 +981,7 @@ class WpLinq {
 	 * Inverts the order of the elements in a sequence.
 	 * @returns {WpLinq} A copy of this sequence in reserve order.
 	 */
-	reverse() { return WpLinq.#_reverse(this.#_thisArg, this.#_iterable); }
+	reverse() { return WpLinq.#_reverse(this.#_thisArg, this); }
 
 	static #_reverse(thisArg, iterator) { return new this(this.#_reverseGen(thisArg, iterator), thisArg); }
 
@@ -997,7 +997,7 @@ class WpLinq {
 	 * @returns {WpLinq} A new sequence whose elements are the result of invoking the transform function on each element this sequence.
 	 * @throws selector must be a function or nullish
 	 */
-	select(selector) { return WpLinq.#_select(this.#_thisArg, this.#_iterable, selector); }
+	select(selector) { return WpLinq.#_select(this.#_thisArg, this, selector); }
 
 	static #_select(thisArg, iterator, selector) {
 		if (selector != null && !WpTypeCheck.IsFunction(selector)) { throw new Error(this.ErrorMessage.MUST_BE_FUNCTION_OR_NULLISH_selector); }
@@ -1030,7 +1030,7 @@ class WpLinq {
 	 * @throws collectionSelector must be a function or nullish
 	 * @throws resultSelector must be a function or nullish
 	 */
-	selectMany(collectionSelector, resultSelector) { return WpLinq.#_selectMany(this.#_thisArg, this.#_iterable, collectionSelector, resultSelector); }
+	selectMany(collectionSelector, resultSelector) { return WpLinq.#_selectMany(this.#_thisArg, this, collectionSelector, resultSelector); }
 
 	static #_selectMany(thisArg, iterator, collectionSelector, resultSelector) {
 		if (collectionSelector != null && !WpTypeCheck.IsFunction(collectionSelector)) { throw new Error(this.ErrorMessage.MUST_BE_FUNCTION_OR_NULLISH_collectionSelector); }
@@ -1064,7 +1064,7 @@ class WpLinq {
 	 * @throws secondIterator must be iterable
 	 * @throws equalityComparer must be a function or nullish
 	 */
-	sequenceEqual(secondIterable, equalityComparer) { return WpLinq.#_sequenceEqual(this.#_thisArg, this.#_iterable, secondIterable, equalityComparer); }
+	sequenceEqual(secondIterable, equalityComparer) { return WpLinq.#_sequenceEqual(this.#_thisArg, this, secondIterable, equalityComparer); }
 
 	static #_sequenceEqual(thisArg, firstIterator, secondIterator, equalityComparer) {
 		if (!WpTypeCheck.IsIterable(secondIterator)) { throw new Error(this.ErrorMessage.MUST_BE_ITERABLE_secondIterator); }
@@ -1104,7 +1104,7 @@ class WpLinq {
 	 * @throws The sequence is empty
 	 * @throws No element satisfies the condition in predicate
 	 */
-	single(predicate) { return WpLinq.#_single(this.#_thisArg, this.#_iterable, predicate, false); }
+	single(predicate) { return WpLinq.#_single(this.#_thisArg, this, predicate, false); }
 
 	/**
 	 * Returns the only element of the sequence. If there is no element in the sequence, the specified defaultValue is returned. If the sequence contains more that a single element, an error is thrown.
@@ -1117,7 +1117,7 @@ class WpLinq {
 	 * @throws The input sequence contains more than one element
 	 * @throws More than one element satisfies the condition in predicate
 	 */
-	singleOrDefault(defaultValue, predicate) { return WpLinq.#_single(this.#_thisArg, this.#_iterable, predicate, true, defaultValue); }
+	singleOrDefault(defaultValue, predicate) { return WpLinq.#_single(this.#_thisArg, this, predicate, true, defaultValue); }
 
 	static #_single(thisArg, iterator, predicate, hasDefaultValue, defaultValue) {
 		if (predicate != null && !WpTypeCheck.IsFunction(predicate)) { throw new Error(this.ErrorMessage.MUST_BE_FUNCTION_OR_NULLISH_predicate); }
@@ -1153,7 +1153,7 @@ class WpLinq {
 	 * @returns {WpLinq} A new sequence that contains the elements that occur after the specified index in the sequence.
 	 * @throws count must be an integer
 	 */
-	skip(count) { return WpLinq.#_skip(this.#_thisArg, this.#_iterable, count) }
+	skip(count) { return WpLinq.#_skip(this.#_thisArg, this, count) }
 
 	static #_skip(thisArg, iterator, count) {
 		if (!WpTypeCheck.IsIntegal(count)) { throw new Error(this.ErrorMessage.MUST_BE_INTEGER_count); }
@@ -1174,7 +1174,7 @@ class WpLinq {
 	 * @returns {WpLinq} A new sequence that contains the elements from the current sequence with the last count elements omitted.
 	 * @throws count must be an integer
 	 */
-	skipLast(count) { return WpLinq.#_skipLast(this.#_thisArg, this.#_iterable, count); }
+	skipLast(count) { return WpLinq.#_skipLast(this.#_thisArg, this, count); }
 
 	static #_skipLast(thisArg, iterator, count) {
 		if (!WpTypeCheck.IsIntegal(count)) { throw new Error(this.ErrorMessage.MUST_BE_INTEGER_count); }
@@ -1197,7 +1197,7 @@ class WpLinq {
 	 * @returns {WpLinq} A new sequence that contains the elements from the sequence starting at the first element in the sequence that does not pass the test specified by predicate.
 	 * @throws predicate must be a function
 	 */
-	skipWhile(predicate) { return WpLinq.#_skipWhile(this.#_thisArg, this.#_iterable, predicate); }
+	skipWhile(predicate) { return WpLinq.#_skipWhile(this.#_thisArg, this, predicate); }
 
 	static #_skipWhile(thisArg, iterator, predicate) {
 		if (!WpTypeCheck.IsFunction(predicate)) { throw new Error(this.ErrorMessage.MUST_BE_FUNCTION_predicate); }
@@ -1234,7 +1234,7 @@ class WpLinq {
 	 * @param {any} extended
 	 */
 	statistics(extended) {
-		return WpLinq.#_statistics(this.#_thisArg, this.#_iterable, extended === true);
+		return WpLinq.#_statistics(this.#_thisArg, this, extended === true);
 	}
 
 	static #_statistics(thisArg, iterator, extended) {
@@ -1356,7 +1356,7 @@ class WpLinq {
 	 * If the sequence is empty, the returned value is undefined.
 	 * @return {number | undefined}
 	 */
-	sum() { return WpLinq.#_sum(this.#_thisArg, this.#_iterable); }
+	sum() { return WpLinq.#_sum(this.#_thisArg, this); }
 
 	static #_sum(thisArg, iterator) {
 		let sum = 0, result = undefined /* in case that the sequence is empty, the returned value is undefined */;
@@ -1374,7 +1374,7 @@ class WpLinq {
 	 * @return {WpLinq} A new sequence that contains the specified number of elements from the start of this sequence.
 	 * @throws count must be an integer
 	 */
-	take(count) { return WpLinq.#_take(this.#_thisArg, this.#_iterable, count); }
+	take(count) { return WpLinq.#_take(this.#_thisArg, this, count); }
 
 	static #_take(thisArg, iterator, count) {
 		if (!WpTypeCheck.IsIntegal(count)) { throw new Error(this.ErrorMessage.MUST_BE_INTEGER_count); }
@@ -1395,7 +1395,7 @@ class WpLinq {
 	 * @return {WpLinq} A new sequence that contains the specified number of last elements from this sequence.
 	 * @throws count must be an integer
 	 */
-	takeLast(count) { return WpLinq.#_takeLast(this.#_thisArg, this.#_iterable, count); }
+	takeLast(count) { return WpLinq.#_takeLast(this.#_thisArg, this, count); }
 
 	static #_takeLast(thisArg, iterator, count) {
 		if (!WpTypeCheck.IsIntegal(count)) { throw new Error(this.ErrorMessage.MUST_BE_INTEGER_count); }
@@ -1418,7 +1418,7 @@ class WpLinq {
 	 * @returns {WpLinq} A new sequence that contains the elements from this sequence that occur before the element at which the test no longer passes.
 	 * @throws predicate must be a function
 	 */
-	takeWhile(predicate) { return WpLinq.#_takeWhile(this.#_thisArg, this.#_iterable, predicate); }
+	takeWhile(predicate) { return WpLinq.#_takeWhile(this.#_thisArg, this, predicate); }
 
 	static #_takeWhile(thisArg, iterator, predicate) {
 		if (!WpTypeCheck.IsFunction(predicate)) { throw new Error(this.ErrorMessage.MUST_BE_FUNCTION_predicate); }
@@ -1439,7 +1439,7 @@ class WpLinq {
 	 * Creates an array from the currrent enumerable.
 	 * @return {Array} An array that contains the elements from of the current sequence.
 	 */
-	toArray() { return WpLinq.#_toArray(this.#_thisArg, this.#_iterable); }
+	toArray() { return WpLinq.#_toArray(this.#_thisArg, this); }
 
 	static #_toArray(thisArg, iterator) {
 		let result = [];
@@ -1459,7 +1459,7 @@ class WpLinq {
 	 * @throws valueSelector must be a function or nullish
 	 * @throws keySelector produces duplicate keys
 	 */
-	toMap(keySelector, valueSelector) { return WpLinq.#_toMapOrSet(this.#_thisArg, this.#_iterable, keySelector, valueSelector, false); }
+	toMap(keySelector, valueSelector) { return WpLinq.#_toMapOrSet(this.#_thisArg, this, keySelector, valueSelector, false); }
 
 	/**
 	 * Creates a set from the current sequence.
@@ -1469,7 +1469,7 @@ class WpLinq {
 	 * @throws keySelector must be a function or nullish
 	 * @throws keySelector produces duplicate keys
 	 */
-	toSet(keySelector) { return WpLinq.#_toMapOrSet(this.#_thisArg, this.#_iterable, keySelector, null, true); }
+	toSet(keySelector) { return WpLinq.#_toMapOrSet(this.#_thisArg, this, keySelector, null, true); }
 
 	static #_toMapOrSet(thisArg, iterator, keySelector, valueSelector, set, weak) {
 		if (keySelector != null && !WpTypeCheck.IsFunction(keySelector)) { throw new Error(this.ErrorMessage.MUST_BE_FUNCTION_OR_NULLISH_keySelector); }
@@ -1506,7 +1506,7 @@ class WpLinq {
 	 * @returns {WpLinq} An enumerable that contains elements from the sequence that satisfy the condition.
 	 * @throws predicate must be a function
 	 */
-	where(predicate) { return WpLinq.#_where(this.#_thisArg, this.#_iterable, predicate); }
+	where(predicate) { return WpLinq.#_where(this.#_thisArg, this, predicate); }
 
 	static #_where(thisArg, iterator, predicate) {
 		if (!WpTypeCheck.IsFunction(predicate)) { throw new Error(this.ErrorMessage.MUST_BE_FUNCTION_predicate); }
@@ -1531,7 +1531,7 @@ class WpLinq {
 	 * @throws secondIterator must be iterable
 	 * @throws equalityComparer must be a function or nullish
 	 */
-	union(secondIterator, equalityComparer) { return WpLinq.#_van(this.#_thisArg, this.#_iterable, secondIterator, equalityComparer, "union"); }
+	union(secondIterator, equalityComparer) { return WpLinq.#_van(this.#_thisArg, this, secondIterator, equalityComparer, "union"); }
 
 	/**
 	 * Applies a specified function to the corresponding elements of two sequences, producing a sequence of the results. The iteration stops when right after the last item of one of the sequences has reached.
