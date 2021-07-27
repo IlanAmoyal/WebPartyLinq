@@ -1,4 +1,4 @@
-﻿import WpTest from "../WebPartyTest/WpTest.js";
+import WpTest from "../WebPartyTest/WpTest.js";
 import WpLinq from "./WpLinq.js";
 
 let an;
@@ -2177,4 +2177,42 @@ linqTest
 	.groupClose();
 
 linqTest.go(true);
+
+/* some more examples */
+console.group("Example 1: where -> sum");
+console.log("new WpLinq([4, 7, 1, 23, 12, 5, 6]).where(a => a % 2 === 0).sum() results:");
+console.log(new WpLinq([4, 7, 1, 23, 12, 5, 6]).where(a => a % 2 === 0).sum());
+console.groupEnd();
+
+console.group("Example 2: intersect -> toArray");
+console.log("new WpLinq([2, 4, 6, 8, 10, 12]).intersect([4, 10, 31, 6, 7]).toArray() results:");
+console.log(WpLinq.from([2, 4, 6, 8, 10, 12]).intersect([4, 10, 31, 6, 7]).toArray());
+console.groupEnd();
+
+console.group("Example 3: union -> select -> toArray");
+console.log('new WpLinq("Hello world").union("THIS world").select((a, idx) => `${idx}-` + a).toArray().join("|") results:');
+console.log(new WpLinq("Hello world").union("THIS world").select((a, idx) => `${idx}-` + a).toArray().join("|"));
+console.groupEnd();
+
+console.group("Example 4: orderBy -> toArray");
+console.log("new WpLinq([4, 6, 3, 1, 9]).orderBy().toArray() results:");
+console.log(new WpLinq([4, 6, 3, 1, 9]).orderBy().toArray());
+console.groupEnd();
+
+console.group("Example 5: orderBy -> thenBy -> select -> toArray");
+console.log(
+	'WpLinq.from([{ key: 6, value: "bbb" }, { key: 3, value: "fff" }, { key: 1, value: "eee" }, { key: 4, value: "aaa" }])\n'+
+		'.orderBy(a => a.key, (a, b) => (a % 2 - b % 2) /* the primary order: in this comparer each odd is greater than an even number */)\n'+
+		'.thenBy(a => a.key, (a, b) => a - b /* the secondary order: regular order */)\n'+
+		'.select(a => `${a.key}: ${a.value}`)\n'+
+		'.toArray() results:'
+);
+console.log(
+	WpLinq.from([{ key: 6, value: "bbb" }, { key: 3, value: "fff" }, { key: 1, value: "eee" }, { key: 4, value: "aaa" }])
+		.orderBy(a => a.key, (a, b) => (a % 2 - b % 2) /* the primary order: in this comparer each odd is greater than an even number */)
+		.thenBy(a => a.key, (a, b) => a - b /* the secondary order: regular order */)
+		.select(a => `${a.key}: ${a.value}`)
+		.toArray()
+);
+console.groupEnd();
 
