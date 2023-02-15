@@ -1,4 +1,4 @@
-# WebPartyLinq
+# WebPartyLinq - LINQ library for Javascript
 
 *An implementation in javascript of Microsoft LINQ to objects.*
 
